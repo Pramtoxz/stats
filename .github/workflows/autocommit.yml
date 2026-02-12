@@ -1,32 +1,44 @@
-name: Auto commit
+name: Auto Commit (Natural Version)
 
 on:
   push:
     branches:
       - master
   schedule:
-    - cron: "0 2,7,12 * * *"
+    - cron: "0 * * * *" # Jalan setiap jam
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   auto_commit:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3      
-        with:
-          persist-credentials: false
-          fetch-depth: 0
 
-      - name: Modify last update
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Random delay (max 10 minutes)
         run: |
-          d=`date '+%Y-%m-%dT%H:%M:%SZ'`
-          echo $d > LAST_UPDATED
-          
-      - name: Commit changes
+          DELAY=$((RANDOM % 600))
+          sleep $DELAY
+
+      - name: Decide commit or skip (60% chance)
+        run: |
+          RAND=$((RANDOM % 100))
+          echo "RAND=$RAND" >> $GITHUB_ENV
+
+      - name: Update activity file
+        if: env.RAND < 60
+        run: |
+          echo "- Update $(date '+%Y-%m-%d %H:%M:%S')" >> activity.md
+
+      - name: Commit and push
+        if: env.RAND < 60
         run: |
           git config --local user.email "pramuditometra@gmail.com"
           git config --local user.name "Pramtoxz"
-          git add -A
+          git add activity.md
           
           arr[0]="chore: update dependencies"
           arr[1]="fix: minor styling adjustments"
@@ -41,10 +53,4 @@ jobs:
           
           rand=$(( RANDOM % 10 ))
           git commit -m "${arr[$rand]}"
-          
-      - name: GitHub Push
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          directory: "."
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          git push
