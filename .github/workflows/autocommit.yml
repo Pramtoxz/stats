@@ -32,16 +32,16 @@ jobs:
           git config --local user.name "Pramtoxz"
           git add -A
           
-          arr[0]="chore(bot): 😂 auto commit"
-          arr[1]="chore(bot): 😱 auto commit"
-          arr[2]="chore(bot): 👿 auto commit"
-          arr[3]="chore(bot): 💩 auto commit"
-          arr[4]="chore(bot): 🙏 auto commit"
-          arr[5]="chore(bot): 🙈 auto commit"
-          arr[6]="chore(bot): 🐐 auto commit"
-          arr[7]="chore(bot): 🤖 auto commit"
-          arr[8]="chore(bot): 🟩 auto commit"
-          arr[9]="chore(bot): 👻 auto commit"
+         arr[0]="chore: update dependencies"
+        arr[1]="fix: minor styling adjustments"
+        arr[2]="docs: update documentation"
+        arr[3]="refactor: optimize internal logic"
+        arr[4]="chore: clean up temporary files"
+        arr[5]="fix: patch security vulnerability"
+        arr[6]="feat: minor internal update"
+        arr[7]="chore: update environment variables"
+        arr[8]="refactor: improve code readability"
+        arr[9]="chore: maintenance update"
           
           rand=$[$RANDOM % ${#arr[@]}]
           
